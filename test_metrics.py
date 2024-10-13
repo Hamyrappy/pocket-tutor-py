@@ -15,7 +15,7 @@ print(bertcos(text1, text2))"""
 from app.utils.metric import cosine_similarity
 from app.utils.submit import string2embedding, embedding2string, get_sentence_embedding
 
-text1 = 'Осторожно, моя собака кусается'
+text1 = 'Моя корова наркоман, 12'
 text2 = 'Моя собака кусается, осторожно'
 
 pred_value = string2embedding(embedding2string(get_sentence_embedding(text1)))
