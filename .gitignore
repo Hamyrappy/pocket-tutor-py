@@ -3,6 +3,8 @@ __pycache__/
 .venv/
 venv/
 .env
-
+.vscode/
 data/
 !app/data
+logs/
+cache/
