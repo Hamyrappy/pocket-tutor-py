@@ -73,10 +73,41 @@ class Cacher():
 
 class Tester():
     def __init__(self, task):
+        """
+        Create a new Tester instance.
+
+        Parameters
+        ----------
+        task : Task
+            The task to test.
+        """
+        
         self.task = task
         self.cacher = Cacher()
     
-    def evaluate(self, code, author_solution=False):
+    def test(self, code, author_solution=False):
+        """
+        Test a code solution against a task.
+
+        Parameters
+        ----------
+        code : str
+            The code to test.
+        author_solution : bool
+            Whether the code is the author solution. (Некоторые задания начинаются с  "считайте блаблабла в переменную блаблабла. Этот код уже написан".
+            Поэтому, чтобы корректно тестировать решения, нужно добавить код, который считывает блаблабла в переменную блаблабла. 
+            Однако, как оказалось, авторские решения уже содержат этот код.))
+
+        Returns
+        -------
+        results : list of list of (bool, str, str)
+            A list of tuples. For each test, the first element is a boolean indicating whether the test was passed, the second element is the output of the code, and the third element is any error output.
+
+        Notes
+        -----
+        If the task requires additional files, a warning will be raised and an empty list will be returned.
+        Да, всё так. Какие-то задачи  требуют прочитать блаблабла.csv, которого у нас неть
+        """
         if self.task.add:
             warnings.warn('Unable to run test: missing additional files')
             return []
@@ -96,6 +127,6 @@ class Tester():
                 errors = self.cacher.readerrors()
                 self.cacher.clearoutput()
                 results[i] = [((output == test.output or output == test.output + '\n') and not errors), output, errors]
-            #self.cacher.end()
+            self.cacher.end()
             return results
 
