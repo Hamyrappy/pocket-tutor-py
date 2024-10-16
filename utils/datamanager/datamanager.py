@@ -77,6 +77,13 @@ class Task():
         return len(self.tests)
         
 class DataManager:
+    '''Class to hold data for tasks, tests and solutions.
+    Usage:
+    >>> dm = DataManager('path/to/data') # в директории должны быть файлы tasks.xlsx, tests.xlsx и solutions.xlsx
+    >>> task = dm[0] #Таск с номером 0
+    >>> test = task[0] #Тест для таска 0 с номером 0
+    >>> solutions = task.solutions #Список с решениями таска 0
+    '''
     def __init__(self, path):
         """
         Initialize the DataManager object.

@@ -72,6 +72,13 @@ class Cacher():
         os.remove(self.stderr)
 
 class Tester():
+    '''Class for testing solutions against single task. Usage:
+    >>> dm = DataManager('path/to/data') 
+    >>> task = dm[0]
+    >>> tester = Tester(task)
+    >>> results = tester.test(code)
+    >>> results[0] # результат решения на тесте 0 - список [пройдено или нет, вывод, ошибки]
+    [True, 'output', 'errors']'''
     def __init__(self, task):
         """
         Create a new Tester instance.
