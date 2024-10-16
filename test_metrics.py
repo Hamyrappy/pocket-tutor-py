@@ -1,16 +1,6 @@
-"""from metrics import bertcos
+'''Чисто поиграться с метрикой'''
 
-text1 = ["Hello, my dog is very cute", "Be careful, my cat can bite you"]
-text2 = ["Привет, моя собака очень милая", "Осторожно, моя кошка кусается"]
-print(bertcos(text1, text2))
 
-text1 = ["Hello, my dog is very cute", "Be careful, my cat can bite you"]
-text2 = [ "Осторожно, моя кошка кусается", "Привет, моя собака очень милая"]
-print(bertcos(text1, text2))
-
-text1 = ["Hello, my dog is very cute", "Be careful, my cat can bite you"]
-text2 = [ "Моя корова курит травку", "Осторожно, моя коза работает в полиции"]
-print(bertcos(text1, text2))"""
 
 from app.utils.metric import cosine_similarity
 from app.utils.submit import string2embedding, embedding2string, get_sentence_embedding

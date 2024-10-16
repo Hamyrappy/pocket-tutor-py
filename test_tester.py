@@ -1,24 +1,16 @@
-from tester import Tester
-from datamanager import DataManager
+'''Tool to chek if all author solutions are considered correct by test system'''
 
-dm = DataManager('test')
+from utils import Tester, DataManager
 
-task = dm.get_task(21)
-code = task.author_solution
-tester = Tester(task)
-for i, result in enumerate(tester.evaluate(code, author_solution=True)):
-    if not result[0]:
-        #print('{}\n{}\n{}'.format(task.pre, code, task.post))
-        print(i, result[1])
-        break
-else:
-    print('correct')
-'''for i in range(dm.get_num_tasks()):
-    task = dm.get_task(i)
-    code = task.author_solution
-    tester = Tester(task)
-    for result in tester.evaluate(code, author_solution=True):
-        if not result[0]:
-            print(i, task.id)
-            break'''
+for data_type in ['train', 'test']:
+    dm = DataManager('data/processed/{}'.format(data_type))
+
+    for i in range(dm.get_num_tasks()):
+        task = dm.get_task(i)
+        code = task.author_solution
+        tester = Tester(task)
+        for result in tester.evaluate(code, author_solution=True):
+            if not result[0]:
+                print('Found a task where author solution is considered incorrect: task № {}, id {} from {} data'.format(i, task.id, data_type))
+                break
     
