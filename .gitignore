@@ -8,3 +8,4 @@ data/
 !app/data
 logs/
 cache/
+.gitkeep
