@@ -14,28 +14,33 @@ def run_tester():
                 report_dict = solution.test(tester)
                 report = 'Не удалось протостировать решение'
                 if report_dict['correct']:
-                    add_anomaly({'type': 'Correct solution',
+                    pass
+                    '''add_anomaly({'type': 'Correct solution',
                                 'about':{
                                     'data_type':data_type,
                                     'id':solution.id,
                                     'student_solution' : solution.solution,
                                     'task': task.desription,
-                                    'task_id':task.id}})
+                                    'task_id':task.id}})'''
                     
                 elif report_dict['correct'] is None:
-                    add_anomaly({'type': 'Missing files',
+                    pass
+                    '''add_anomaly({'type': 'Missing files',
                                 'about':{
                                     'data_type': data_type,
                                     'task': task.desription,
                                     'task_id': task.id,
-                                    'comment': task.add}})
+                                    'comment': task.add}})'''
                 else:
-                    report = report_dict['where_error']*report_dict['syntax_error']+report_dict['report']
+                    report = report_dict['report']
                 data[solution.id]={
                     'student_solution' : solution.solution,
                     'task': task.desription,
                     'correct_example': task.author_solution,
-                    'tester_report': report}
+                    'tester_report': report,
+                    'error_on_open': report_dict['error_on_open'],
+                    'error_on_closed': report_dict['error_on_closed'],
+                    'syntax_error': report_dict['syntax_error']}
         json.dump(data, open(datapath.format(data_type), 'w', encoding='utf-8'), ensure_ascii=False)
             
 if __name__ == '__main__':

@@ -55,13 +55,17 @@ class AngenticSystem():
         return tuple(final_selection)
 
 
-    def predict(self, task, correct_example, student_solution, tester_report):        
+    def predict(self, task, correct_example, student_solution, tester_report, error_on_open, error_on_closed, syntax_error):        
         analysis_result = self.analysis_chain.invoke({
             "task":task,
             "correct_example":correct_example,
             'tester_report':tester_report,
             "student_solution":student_solution
             })
+        
+        
+        
+        
         time.sleep(self.required_sleep_time)
         
         #print(analysis_result.content)
@@ -75,7 +79,20 @@ class AngenticSystem():
         })
         )
         time.sleep(self.required_sleep_time)
-        return comment_result.content
+        if not syntax_error:
+            if error_on_closed:
+                if error_on_open:
+                    where_error = 'Ошибка в открытых и скрытых тестах. '
+                else:
+                    where_error = 'Ошибка в скрытых тестах. '
+            else:
+                if error_on_open:
+                    where_error = 'Ошибка в открытых тестах. '
+                else:
+                    where_error = ''
+        else:
+            where_error = ''
+        return where_error + comment_result.content
     
 
 
