@@ -5,7 +5,7 @@ import shutil
 
 import warnings
 
-import numpy as np
+import pandas as pd
 
 class Cacher():
     _n = 0
@@ -38,7 +38,7 @@ class Cacher():
     
     def writeinput(self, input):
         with open(self.stdin, 'w', encoding='utf-8') as f:
-            f.write(input)
+            f.write(input+'\n')
     
     def readoutput(self):
         with open(self.stdout, 'r', encoding='utf-8') as f:
@@ -66,11 +66,11 @@ class Cacher():
     
     def end(self):
         self.working = False
-        os.remove(self.codefile)
-        os.remove(self.stdin)
-        os.remove(self.stdout)
-        os.remove(self.stderr)
-
+        for filepath in [self.codefile, self.stdin, self.stdout, self.stderr]:
+            try:
+                os.remove(filepath)
+            except FileNotFoundError:
+                pass
 class Tester():
     '''Class for testing solutions against single task. Usage:
     >>> dm = DataManager('path/to/data') 
@@ -115,7 +115,7 @@ class Tester():
         If the task requires additional files, a warning will be raised and an empty list will be returned.
         Да, всё так. Какие-то задачи  требуют прочитать блаблабла.csv, которого у нас неть
         """
-        if self.task.add:
+        if not pd.isna(self.task.add) and self.task.add:
             warnings.warn('Unable to run test: missing additional files')
             return []
         else:
@@ -124,7 +124,7 @@ class Tester():
                 code = '{}\n{}\n{}'.format(self.task.pre, code, self.task.post)
             self.cacher.writecode(code)
             results = [0]*len(self.task)
-            for i, test in enumerate(self.task):
+            for i, test in enumerate(self.task.tests):
                 self.cacher.writeinput(test.input+'\n')
                 subprocess.Popen('python {}'.format(self.cacher.codefile),
                                  stdin=self.cacher.get_stdin(),
