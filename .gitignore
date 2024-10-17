@@ -4,7 +4,6 @@ __pycache__/
 venv/
 .env
 .vscode/
-data/
 !app/data
 logs/
 cache/
