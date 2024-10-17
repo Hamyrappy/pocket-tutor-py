@@ -1,62 +1,27 @@
 import os
 
 import pandas as pd
-from models import *
+from agentic_system import AngenticSystem
 from app.utils.submit import generate_submit
 import json
+from scripts.run_tester import run_tester
 
 if __name__ == "__main__":
+    #run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
+    data = json.load(open("data/processed/test/prepared.json", "r", encoding="utf-8"))
+    ag_sys = AngenticSystem(os.environ["SAMBANOVA_API_KEY"])
 
-    data = json.load(open("data/processed/test/prepared.json", "r"))
-    librarian = Librarian(???)
-    formatter = Formatter(???)
-    commentator = Commentator(???)
-    template = '''?????????????
-УСЛОВИЕ ЗАДАЧИ:
-{task}
-
-ОБРАЗЕЦ правильного решения:
-{correct_example}
-
-НЕПРАВИЛЬНОЕ РЕШЕНИЕ ученика:
-{student_solution}
-
-ПРИМЕРЫ комментария:
-1.
-{comments[0]}
-
-2.
-{comments[1]}
-
-3.
-{comments[2]}
-
-4.
-{comments[3]}'''
-    def predict(row: pd.Series) -> str:
+    def predict(row: pd.Series):
         solution_id = row['id']
         info = data[str(solution_id)]
-        task = info['task']
-        student_solution = info['student_solution']
-        author_solution = info['author_solution']
-        test_system_report = info['test_system_report']
-        other_comments = librarian(???)
-        prompt = template.format(
-            task=task,
-            student_solution=student_solution,
-            author_solution=author_solution,
-            test_system_report=test_system_report,
-            comments=other_comments
-        )
-        model_output_raw = commentator(prompt)
-        model_output = formatter(model_output_raw)
+        model_output = ag_sys.predict(**info)
         return model_output
         
 
 
     generate_submit(
-        test_solutions_path="../data/raw/test/solutions.xlsx",
+        test_solutions_path="data/processed/test/solutions.xlsx",
         predict_func=predict,
-        save_path="../data/processed/submission.csv",
+        save_path="data/complete/submission.csv",
         use_tqdm=True,
     )
