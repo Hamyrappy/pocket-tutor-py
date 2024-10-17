@@ -85,17 +85,17 @@ class Solution():
     def test(self, tester):
         test_results = tester.test(self.solution)
         if not test_results:
-            return {'correct': None, 'report': 'Тесты не удалось запустить', 'syntax_error':False,  'where_error': ''}
-        error_in_open = False
-        error_in_close = False
+            return {'correct': None, 'report': 'Тесты не удалось запустить', 'syntax_error':False,  'error_on_open': False, 'error_on_closed': False}
+        error_on_open = False
+        error_on_closed = False
         verdicts = {}
         syntax_error = False
         for result, test in zip(test_results, tester.task.tests):
             if not result[0]:
                 if test.type == 'open':
-                    error_in_open = True
+                    error_on_open = True
                 else:
-                    error_in_close = True
+                    error_on_closed = True
                 
                 if result[2]:
                     if not 'RuntimeError'in verdicts:
@@ -103,25 +103,18 @@ class Solution():
                     if re.search('SyntaxError', result[2]):
                         syntax_error = True
                         report = '''В коде решения присутствует синтаксическая ошибка. Лог: {}'''.format(result[2])
-                        where_error = 'Ошибка в открытых и скрытых тестах. '
+                        error_on_open = True
+                        error_on_closed = True
                         break
                 else:
                     if not 'WrongAnswer' in verdicts:
                         verdicts['WrongAnswer'] = {'input':test.input, 'answer':test.output, 'output':result[1]}
                 
-        else:           
-            if error_in_open and error_in_close:
-                where_error = 'Ошибка в открытых и скрытых тестах. '
-            elif error_in_close:
-                where_error = 'Ошибка в скрытых тестах. '
-            elif error_in_open:
-                where_error = 'Ошибка в открытых тестах. '
-            else:
-                warnings.warn('Umm... Correct solution?')
-                return {'correct': True, 'report': 'Решение прошло все тесты', 'syntax_error':False,  'where_error': ''}
-            report = ''
-            if 'WrongAnswer' in verdicts:
-                WA_report = '''На одном из тестов решение вернуло неверный ответ.
+        if not error_on_open and not error_on_closed:           
+            return {'correct': True, 'report': 'Решение прошло все тесты', 'syntax_error':False,  'error_on_open': False, 'error_on_closed': False}
+        report = ''
+        if 'WrongAnswer' in verdicts:
+            WA_report = '''На одном из тестов решение вернуло неверный ответ.
 Ввод теста:
 {input}
 Ожидаемый ответ:
@@ -129,16 +122,16 @@ class Solution():
 Ответ решения:
 {output}
 '''.format(**verdicts['WrongAnswer'])
-                report += WA_report
-            if 'RuntimeError' in verdicts:
-                error_report = '''На одном из тестов решение выполнилось с ошибкой.
+            report += WA_report
+        if 'RuntimeError' in verdicts:
+            error_report = '''На одном из тестов решение выполнилось с ошибкой.
 Ввод теста:
 {input}
 Лог:
 {errors}
 '''.format(**verdicts['RuntimeError'])
-                report += error_report
-        return {'correct': False, 'report': report, 'syntax_error':syntax_error, 'where_error': where_error}
+            report += error_report
+        return {'correct': False, 'report': report, 'syntax_error':syntax_error,  'error_on_open': error_on_open, 'error_on_closed': error_on_closed}
     
     
 class DataManager:
