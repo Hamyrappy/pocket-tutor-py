@@ -3,6 +3,7 @@ from typing import Callable
 import pandas as pd
 import torch
 from transformers import BertModel, BertTokenizer
+import json
 
 print("Loading models...", end="")
 model_name = "DeepPavlov/rubert-base-cased-sentence"
@@ -27,21 +28,33 @@ def embedding2string(embedding: torch.Tensor) -> str:
     return " ".join([str(i) for i in embedding.tolist()])
 
 
-def generate_submit(test_solutions_path: str, predict_func: Callable, save_path: str, use_tqdm: bool = True) -> None:
+def generate_submit(test_solutions_path: str, predict_func: Callable, save_path: str, use_tqdm: bool = True, save_intermediate: bool = False, startfrom: int = 0, data_type = 'test') -> None:
     test_solutions = pd.read_excel(test_solutions_path)
-    bar = range(len(test_solutions))
+    bar = range(startfrom, len(test_solutions))
     if use_tqdm:
         import tqdm
 
         bar = tqdm.tqdm(bar, desc="Predicting")
 
     submit_df = pd.DataFrame(columns=["solution_id", "author_comment", "author_comment_embedding"])
+    if save_intermediate:
+        intermediate = []
     for i in bar:
         
         solution_row = test_solutions.iloc[i]
         idx = str(solution_row["id"])
-        text = predict_func(idx)  # here you can do absolute whatever you want
-
+        if save_intermediate:
+            text, analysis_result = predict_func(idx, return_analysis=True)
+        else:
+            text = predict_func(idx)
         embedding = embedding2string(get_sentence_embedding(text))
         submit_df.loc[i] = [idx, text, embedding]
+        with open(f'logs/{data_type}{i}.json', 'w', encoding='utf-8') as f:
+                json.dump([idx, text, embedding], f, ensure_ascii=False)
+        if save_intermediate:
+            intermediate.append({'question':analysis_result, 'answer': solution_row['author_comment']})
+            with open(f'logs/{data_type}{i}_i.json', 'w', encoding='utf-8') as f:
+                json.dump({'question':analysis_result, 'answer': solution_row['author_comment']}, f, ensure_ascii=False)
+            
     submit_df.to_csv(save_path, index=False)
+    json.dump(intermediate, open("intermediate.json", "w", encoding='utf-8'), ensure_ascii=False)

@@ -13,12 +13,17 @@ class YandexGPT2LangchainOutput():
 
 class YandexGPTFinetuned():
     """Class for custom finetuned YandexGPT model. See more on https://yandex.cloud/en-ru/docs/foundation-models/concepts/yandexgpt/models"""
+    model_urls = {
+        "lite": 'gpt://{folder_id}/yandexgpt-lite/latest',
+        "pro": "gpt://{folder_id}/yandexgpt/latest",
+        "custom": 'ds://{model_id}'
+    }
 
     def __init__(
         self,
         IAM_token: str,
         folder_id: str,
-        model_id: str,
+        model_type_or_id: str,
         system_prompt: Optional[str] = None,
         temperature: float = 0.6,
         max_tokens: int = 2000,
@@ -31,10 +36,10 @@ class YandexGPTFinetuned():
             "Authorization": f"Bearer {IAM_token}",
             "x-folder-id": folder_id,
         }
-        if model_id == 'lite':
-            self.model_url = f'gpt://{folder_id}/yandexgpt-lite/latest'
-        else:
-            self.model_url = f'ds://{model_id}'
+        try:
+            self.model_url = self.model_urls[model_type_or_id].format(folder_id=folder_id)
+        except KeyError:
+            self.model_url = self.model_urls['custom'].format(model_id=model_type_or_id)
         self.completion_options = {
             "stream": False,
             "temperature": temperature,
