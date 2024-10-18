@@ -29,6 +29,7 @@ Tutor-copilot for python
 │           └── tests.xlsx
 ├── logs
 ├── main.py <---------------------------- Основной файл проекта, генерит финальный сабмит.
+├── main_single.py <---------------------------- Выдаёт ответ модели для едиинственного кода
 ├── notebooks
 │   └── yandexgpt.ipynb
 ├── poetry.lock

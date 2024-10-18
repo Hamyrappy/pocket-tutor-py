@@ -83,7 +83,16 @@ class AngenticSystem():
         })        
         need_jailguard = injection_check_response.content != 'CLEAR' and injection_check_response.content != 'clear' and injection_check_response.content != 'Сlear' 
         
-        print(injection_check_response.content, need_jailguard, file=open('logs/ic_log.txt', 'a', encoding='utf-8'))
+        try:
+            print(injection_check_response.content, need_jailguard, file=open('logs/ic_log.txt', 'a', encoding='utf-8'))
+        except FileNotFoundError:
+            try:
+                open('logs/ic_log.txt', 'w', encoding='utf-8').close()
+                print(injection_check_response.content, need_jailguard, file=open('logs/ic_log.txt', 'a', encoding='utf-8'))
+            except FileNotFoundError:
+                os.mkdir('logs')
+                open('logs/ic_log.txt', 'w', encoding='utf-8').close()
+                print(injection_check_response.content, need_jailguard, file=open('logs/ic_log.txt', 'a', encoding='utf-8'))
         jailguarded_solution = student_solution
         if need_jailguard:
             for _ in range(3):
