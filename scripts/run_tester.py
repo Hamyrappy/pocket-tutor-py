@@ -1,16 +1,19 @@
 from utils import DataManager, Tester, add_anomaly
 import json
+from tqdm import tqdm
+
 datapath = 'data/processed/{}/prepared.json'
 
 def run_tester():
     for data_type in ['train', 'test']:
         data = {}
         dm = DataManager('data/processed/{}'.format(data_type))
-
-        for i in range(len(dm)):
+        bar = tqdm(range(len(dm)), desc="Running tester on {} data".format(data_type))
+        for i in bar:
             task = dm.get_task(i)
             tester = Tester(task)
-            for solution in task.solutions:
+            sub_bar = tqdm(task.solutions, desc="Task id {}".format(task.id), leave=False)
+            for solution in sub_bar:
                 report_dict = solution.test(tester)
                 report = 'Не удалось протестировать решение'
                 if report_dict['correct']:

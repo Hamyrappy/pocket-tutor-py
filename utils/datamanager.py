@@ -68,9 +68,14 @@ class Task():
         self.level = info['level']
         self.desription = info['description']
         self.author_solution = info['author_solution']
-        self.pre = replace_nan(info['pre'])
-        self.post = replace_nan(info['post'])
-        self.add = replace_nan(info['add'])
+        try:
+            self.pre = replace_nan(info['pre'])
+            self.post = replace_nan(info['post'])
+            self.add = replace_nan(info['add'])
+        except KeyError:
+            self.pre = ''
+            self.post = ''
+            self.add = ''
 
     def __len__(self):
         return len(self.tests)
