@@ -49,4 +49,4 @@ def check_submit_correctness(submit_path: str, submit_example_path: str) -> bool
 
 
 if __name__ == "__main__":
-    check_submit_correctness(submit_path="data/complete/submissionv2.csv", submit_example_path="submit_example.csv")
+    check_submit_correctness(submit_path="data/complete/submit.csv", submit_example_path="data/raw/submit_example.csv")

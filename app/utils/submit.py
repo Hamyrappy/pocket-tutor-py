@@ -5,8 +5,9 @@ import torch
 from transformers import BertModel, BertTokenizer
 
 print("Loading models...", end="")
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-model = BertModel.from_pretrained("bert-base-uncased")
+model_name = "DeepPavlov/rubert-base-cased-sentence"
+tokenizer = BertTokenizer.from_pretrained(model_name)
+model = BertModel.from_pretrained(model_name)
 print("OK")
 
 
@@ -36,9 +37,9 @@ def generate_submit(test_solutions_path: str, predict_func: Callable, save_path:
 
     submit_df = pd.DataFrame(columns=["solution_id", "author_comment", "author_comment_embedding"])
     for i in bar:
+        
         solution_row = test_solutions.iloc[i]
         idx = solution_row["solution_id"]
-
         text = predict_func(idx)  # here you can do absolute whatever you want
 
         embedding = embedding2string(get_sentence_embedding(text))
