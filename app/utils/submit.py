@@ -57,4 +57,5 @@ def generate_submit(test_solutions_path: str, predict_func: Callable, save_path:
                 json.dump({'question':analysis_result, 'answer': solution_row['author_comment']}, f, ensure_ascii=False)
             
     submit_df.to_csv(save_path, index=False)
-    json.dump(intermediate, open("intermediate.json", "w", encoding='utf-8'), ensure_ascii=False)
+    if save_intermediate:
+        json.dump(intermediate, open("intermediate.json", "w", encoding='utf-8'), ensure_ascii=False)
