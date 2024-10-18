@@ -1,4 +1,5 @@
-from app.utils.submit import get_sentence_embedding, cosine_similarity
+from app.utils.metric import cosine_similarity
+from app.utils.submit import get_sentence_embedding
 
 
 def test():
