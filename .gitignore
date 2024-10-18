@@ -7,4 +7,3 @@ venv/
 !app/data
 logs/
 cache/
-.gitkeep
