@@ -8,13 +8,16 @@ import agentic_system.prompts as prompts
 
 import pandas as pd
 
+from agentic_system.yandexgpt import YandexGPTFinetuned
+
 
 class AngenticSystem():
     """A system of LLM agents with RAG, powered by combination of Llama3.1-70B SambaNova and tuned YandexGPT"""
 
     def __init__(
         self,
-        token: str,
+        sambanova_token: str,
+        yandex_gpt_params: dict,
         code_analysis_template: str = prompts.code_analysis_template,
         comment_writer_template: str = prompts.comment_writer_template,
         model_name: str = "Meta-Llama-3.1-70B-Instruct",
@@ -29,7 +32,7 @@ class AngenticSystem():
         
         self.llm = ChatOpenAI(
             base_url="https://api.sambanova.ai/v1/",  
-            api_key=token,
+            api_key=sambanova_token,
             streaming=True,
             model=model_name,
         )
@@ -43,7 +46,10 @@ class AngenticSystem():
         
         
         self.analysis_chain = self.code_analysis_prompt_template | self.llm # Создаем звенья цепи
-        self.comment_model = self.llm
+        
+        
+        
+        self.comment_model = YandexGPTFinetuned(**yandex_gpt_params, system_prompt=prompts.YandexGPT_system_prompt)
 
 
     def retriever(self, analysis_result, n=6):
@@ -55,7 +61,7 @@ class AngenticSystem():
         return tuple(final_selection)
 
 
-    def predict(self, task, correct_example, student_solution, tester_report, error_on_open, error_on_closed, syntax_error):        
+    def predict(self, task, correct_example, student_solution, tester_report, error_message):        
         analysis_result = self.analysis_chain.invoke({
             "task":task,
             "correct_example":correct_example,
@@ -79,20 +85,8 @@ class AngenticSystem():
         })
         )
         time.sleep(self.required_sleep_time)
-        if not syntax_error:
-            if error_on_closed:
-                if error_on_open:
-                    where_error = 'Ошибка в открытых и скрытых тестах. '
-                else:
-                    where_error = 'Ошибка в скрытых тестах. '
-            else:
-                if error_on_open:
-                    where_error = 'Ошибка в открытых тестах. '
-                else:
-                    where_error = ''
-        else:
-            where_error = ''
-        return where_error + comment_result.content
+        
+        return error_message + comment_result.content
     
 
 
