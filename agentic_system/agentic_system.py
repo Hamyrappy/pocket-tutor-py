@@ -17,9 +17,15 @@ class AngenticSystem():
     def __init__(
         self,
         sambanova_token: str,
+<<<<<<< HEAD
         yandex_gpt_params: dict,
         code_analysis_template: str = prompts.code_analysis_template_2,
         comment_writer_template: str = prompts.comment_writer_template_2,
+=======
+        comment_writer_model_params: dict,
+        code_analysis_template: str = prompts.code_analysis_template,
+        comment_writer_template: str = prompts.comment_writer_template,
+>>>>>>> 8aeda831726bb5565d57e4f98b05765caa09e6ee
         model_name: str = "Meta-Llama-3.1-70B-Instruct",
         required_sleep_time: float = 3.5,
         datapath: str = "data/processed",
@@ -46,10 +52,11 @@ class AngenticSystem():
         
         
         self.analysis_chain = self.code_analysis_prompt_template | self.llm # Создаем звенья цепи
-        
-        
-        
-        self.comment_model = YandexGPTFinetuned(**yandex_gpt_params, system_prompt=prompts.YandexGPT_system_prompt)
+         
+        if comment_writer_model_params['model_name'] == 'YandexGPT':     
+            self.comment_model = YandexGPTFinetuned(**comment_writer_model_params['model_params'], system_prompt=prompts.YandexGPT_system_prompt)
+        elif comment_writer_model_params['model_name'] == 'langchain':
+            self.comment_model = self.llm
 
 
     def retriever(self, analysis_result, n=6):
