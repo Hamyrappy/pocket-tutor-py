@@ -12,25 +12,23 @@ def run_tester():
             tester = Tester(task)
             for solution in task.solutions:
                 report_dict = solution.test(tester)
-                report = 'Не удалось протостировать решение'
+                report = 'Не удалось протестировать решение'
                 if report_dict['correct']:
-                    pass
-                    '''add_anomaly({'type': 'Correct solution',
+                    add_anomaly({'type': 'Correct solution',
                                 'about':{
                                     'data_type':data_type,
                                     'id':solution.id,
                                     'student_solution' : solution.solution,
                                     'task': task.desription,
-                                    'task_id':task.id}})'''
+                                    'task_id':task.id}})
                     
                 elif report_dict['correct'] is None:
-                    pass
-                    '''add_anomaly({'type': 'Missing files',
+                    add_anomaly({'type': 'Missing files',
                                 'about':{
                                     'data_type': data_type,
                                     'task': task.desription,
                                     'task_id': task.id,
-                                    'comment': task.add}})'''
+                                    'comment': task.add}})
                 else:
                     report = report_dict['report']
                 data[solution.id]={
