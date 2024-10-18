@@ -18,8 +18,8 @@ class AngenticSystem():
         self,
         sambanova_token: str,
         yandex_gpt_params: dict,
-        code_analysis_template: str = prompts.code_analysis_template,
-        comment_writer_template: str = prompts.comment_writer_template,
+        code_analysis_template: str = prompts.code_analysis_template_2,
+        comment_writer_template: str = prompts.comment_writer_template_2,
         model_name: str = "Meta-Llama-3.1-70B-Instruct",
         required_sleep_time: float = 3.5,
         datapath: str = "data/processed",
@@ -89,7 +89,7 @@ class AngenticSystem():
             "solution_analysis":analysis_result.content
         })
         )
-        time.sleep(self.required_sleep_time)
+        #time.sleep(self.required_sleep_time)
         
         return error_message + comment_result.content
     
