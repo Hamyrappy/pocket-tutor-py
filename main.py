@@ -6,11 +6,18 @@ from app.utils.submit import generate_submit
 import json
 from scripts.run_tester import run_tester
 
+from utils.processing import predict_error_message
+
 if __name__ == "__main__":
     #run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
-    data = json.load(open("data/processed/test/prepared.json", "r", encoding="utf-8"))
-    ag_sys = AngenticSystem(os.environ["SAMBANOVA_API_KEY"])
+    data_no_error_msgs = json.load(open("data/processed/test/prepared.json", "r", encoding="utf-8"))
+    data = predict_error_message(data_no_error_msgs)
 
+    ag_sys = AngenticSystem(os.environ["SAMBANOVA_API_KEY"], yandex_gpt_params={
+        'IAM_token': "t1.9euelZrOmJ7LmZmMi5zKisyRxo-Qje3rnpWax5LHysaPlJOXkMvNnZbJjpzl8_dpCjdH-e9OXQhz_t3z9yk5NEf5705dCHP-zef1656Vmo3MjJidkZrHl86Zy5bPlJiY7_zF656Vmo3MjJidkZrHl86Zy5bPlJiY.3ZaunjBvjweQIwQ_Ds4PYg1-WTygpRuphP2FHZY_Ndnn4qfk9ypvnSBQBxWb8aXF77-sSBvQsklOWPA3iYgGCA",
+        "folder_id": "b1gi0bfnfat2dfgtf3uh",
+        "model_id": "lite"
+    })
     def predict(idx):
         info = data[idx]
         model_output = ag_sys.predict(**info)
