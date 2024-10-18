@@ -4,7 +4,7 @@ import langchain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 import time
-import prompts
+from agentic_system import prompts
 
 import pandas as pd
 
