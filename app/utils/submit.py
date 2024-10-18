@@ -36,10 +36,10 @@ def generate_submit(test_solutions_path: str, predict_func: Callable, save_path:
 
     submit_df = pd.DataFrame(columns=["solution_id", "author_comment", "author_comment_embedding"])
     for i in bar:
-        idx = test_solutions.index[i]
         solution_row = test_solutions.iloc[i]
+        idx = solution_row["solution_id"]
 
-        text = predict_func(solution_row)  # here you can do absolute whatever you want
+        text = predict_func(idx)  # here you can do absolute whatever you want
 
         embedding = embedding2string(get_sentence_embedding(text))
         submit_df.loc[i] = [idx, text, embedding]
