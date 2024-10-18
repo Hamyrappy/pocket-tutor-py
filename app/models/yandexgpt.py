@@ -10,7 +10,7 @@ class YandexGPT(BaseModel):
     """See more on https://yandex.cloud/en-ru/docs/foundation-models/concepts/yandexgpt/models"""
 
     model_urls = {
-        "lite": "gpt://{}/yandexgpt-lite/latest",
+        "lite": 'gpt://{folder_id}/yandexgpt-lite/latest',
         "pro": "gpt://{}/yandexgpt/latest",  # Restricted by competition rules, but you can test accuracy with it
     }
 
