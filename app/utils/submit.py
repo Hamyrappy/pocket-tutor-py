@@ -39,7 +39,7 @@ def generate_submit(test_solutions_path: str, predict_func: Callable, save_path:
     for i in bar:
         
         solution_row = test_solutions.iloc[i]
-        idx = solution_row["solution_id"]
+        idx = str(solution_row["id"])
         text = predict_func(idx)  # here you can do absolute whatever you want
 
         embedding = embedding2string(get_sentence_embedding(text))
