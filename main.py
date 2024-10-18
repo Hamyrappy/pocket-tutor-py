@@ -12,6 +12,11 @@ from dotenv import load_dotenv
 import agentic_system.prompts as prompts
 import time
 
+def predict(idx, return_analysis = False):
+    info = data[idx]
+    model_output = ag_sys.predict(**info, return_analysis=return_analysis)
+    return model_output
+
 
 if __name__ == "__main__":
     data_type = "test"
@@ -19,7 +24,7 @@ if __name__ == "__main__":
     save_path = "data/complete/submission.csv"
     
     load_dotenv('env.env')
-    #run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
+    run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
     data_no_error_msgs = json.load(open(f"data/processed/{data_type}/prepared.json", "r", encoding="utf-8"))
     data = predict_error_message(data_no_error_msgs)
 
@@ -66,12 +71,7 @@ if __name__ == "__main__":
         'template': prompts.comment_writer_template_no_comments,
         },
         need_comments = False, 
-        required_sleep_time=1)
-    def predict(idx, return_analysis = False):
-        info = data[idx]
-        model_output = ag_sys.predict(**info, return_analysis=return_analysis)
-        return model_output
-        
+        required_sleep_time=1)        
 
 
     generate_submit(
