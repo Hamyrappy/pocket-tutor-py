@@ -9,8 +9,6 @@ from scripts.run_tester import run_tester
 from utils.processing import predict_error_message
 
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv(dotenv_path="env.env")
         
     #run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
     data_no_error_msgs = json.load(open("data/processed/test/prepared.json", "r", encoding="utf-8"))
