@@ -52,7 +52,7 @@ ag_sys = AngenticSystem(
     comment_writer_model_params={
     'model_name':'YandexGPT',
     'model_params': {
-        'IAM_token' : "t1.9euelZrOmJ7LmZmMi5zKisyRxo-Qje3rnpWax5LHysaPlJOXkMvNnZbJjpzl8_dpCjdH-e9OXQhz_t3z9yk5NEf5705dCHP-zef1656Vmo3MjJidkZrHl86Zy5bPlJiY7_zF656Vmo3MjJidkZrHl86Zy5bPlJiY.3ZaunjBvjweQIwQ_Ds4PYg1-WTygpRuphP2FHZY_Ndnn4qfk9ypvnSBQBxWb8aXF77-sSBvQsklOWPA3iYgGCA",
+        'IAM_token' : "t1.9euelZrGmpCWkI7MjIyLxpaJkpiKze3rnpWax5LHysaPlJOXkMvNnZbJjpzl8_cjJzRH-e9EfAdA_N3z92NVMUf570R8B0D8zef1656VmpaKz5vNi8vHz5iLmo2VjI6O7_zF656VmpaKz5vNi8vHz5iLmo2VjI6O.Uxp1GjkGOgKLR6EfaaL5wzLaFDG7dnC_IAwLdkQDVtiHF5zM2JxwkrfiZ79eC1kgA514sdP9e84XdwiPcafOCQ",
         'folder_id' : 'b1gi0bfnfat2dfgtf3uh',
         'model_type_or_id': 'bt193kh5joiibpj97h47',
         'system_prompt': prompts.YandexGPT_system_prompt
