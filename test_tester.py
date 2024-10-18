@@ -4,11 +4,11 @@ from utils import Tester, DataManager
 
 for data_type in ['train', 'test']:
     dm = DataManager('data/processed/{}'.format(data_type))
-
+    for i in range(len(dm)):
         task = dm.get_task(i)
         code = task.author_solution
         tester = Tester(task)
-        for result in tester.test(code, author_solution=True):
+        for result in tester.test(code):
             if not result[0]:
                 print('Found a task where author solution is considered incorrect: task № {}, id {} from {} data'.format(i, task.id, data_type))
                 break

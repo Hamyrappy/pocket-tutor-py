@@ -92,7 +92,7 @@ class Tester():
         self.task = task
         self.cacher = Cacher()
     
-    def test(self, code, author_solution=False):
+    def test(self, code):
         """
         Test a code solution against a task.
 
@@ -100,10 +100,6 @@ class Tester():
         ----------
         code : str
             The code to test.
-        author_solution : bool
-            Whether the code is the author solution. (Некоторые задания начинаются с  "считайте блаблабла в переменную блаблабла. Этот код уже написан".
-            Поэтому, чтобы корректно тестировать решения, нужно добавить код, который считывает блаблабла в переменную блаблабла. 
-            Однако, как оказалось, авторские решения уже содержат этот код.))
 
         Returns
         -------
@@ -120,8 +116,7 @@ class Tester():
             return []
         else:
             self.cacher.prepare()
-            if not author_solution:
-                code = '{}\n{}\n{}'.format(self.task.pre, code, self.task.post)
+            code = '{}\n{}\n{}'.format(self.task.pre, code, self.task.post)
             self.cacher.writecode(code)
             results = [0]*len(self.task)
             for i, test in enumerate(self.task.tests):
