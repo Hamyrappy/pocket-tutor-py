@@ -133,13 +133,13 @@ class AngenticSystem():
             comments = self.retriever(analysis_result.content)
             
             comment_result = self.comment_model.invoke({"task":task,
-                "student_solution":student_solution,
+                "student_solution": jailguarded_solution,
                 "comments":comments, 
                 "solution_analysis":analysis_result.content
             })
         else:
             comment_result = self.comment_model.invoke({"task":task,
-                "student_solution":student_solution,
+                "student_solution": jailguarded_solution,
                 "solution_analysis":analysis_result.content
             })
         time.sleep(self.required_sleep_time)
