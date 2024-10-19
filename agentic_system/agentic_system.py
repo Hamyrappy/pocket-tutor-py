@@ -145,8 +145,8 @@ class AngenticSystem():
         time.sleep(self.required_sleep_time)
         
         if return_analysis:
-            return error_message + comment_result.content, analysis_result.content
-        return error_message + comment_result.content
+            return comment_result.content, analysis_result.content
+        return comment_result.content
     
 
 
