@@ -71,6 +71,7 @@ class Cacher():
                 os.remove(filepath)
             except FileNotFoundError:
                 pass
+
 class Tester():
     '''Class for testing solutions against single task. Usage:
     >>> dm = DataManager('path/to/data') 
@@ -121,7 +122,8 @@ class Tester():
             results = [0]*len(self.task)
             for i, test in enumerate(self.task.tests):
                 self.cacher.writeinput(test.input+'\n')
-                subprocess.Popen('python {}'.format(self.cacher.codefile),
+                abspath = os.path.abspath(self.cacher.codefile)
+                subprocess.Popen(["python", abspath],
                                  stdin=self.cacher.get_stdin(),
                                  stdout=self.cacher.get_stdout(),
                                  stderr=self.cacher.get_stderr()).wait()
