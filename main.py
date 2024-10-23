@@ -54,7 +54,7 @@ ag_sys = AngenticSystem(
     'model_params': {
         'IAM_token' : "t1.9euelZqdkM6LzZKRmI6LyseXis-Mxu3rnpWax5LHysaPlJOXkMvNnZbJjpzl8_dWAC1H-e9WbE5K_t3z9xYvKkf571ZsTkr-zef1656VmpnHk46QyJidypnGkJKYzZiT7_zF656VmpnHk46QyJidypnGkJKYzZiT.M0tfnwQ1RirphyftClm92Kr6aOmmF8Oo8shGkefkuH2uRr6EndMK6ABjItxIlNseUW8JarhxXhHMvfjmtqIWCg",
         'folder_id' : 'b1gi0bfnfat2dfgtf3uh',
-        'model_type_or_id': 'bt193kh5joiibpj97h47',
+        'model_type_or_id': 'lite',
         'system_prompt': prompts.YandexGPT_system_prompt
     },
     'template': prompts.comment_writer_template_no_comments,
@@ -63,12 +63,12 @@ ag_sys = AngenticSystem(
     required_sleep_time=1)        
 
 if __name__ == "__main__":
-    data_type = "test"
+    data_type = "train"
     
     save_path = "data/complete/submission.csv"
     
     load_dotenv('env.env')
-    run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
+    #run_tester() #-- для запуска тестировщика. Работает долго, запускайте один раз. Уже выполнен.
     data_no_error_msgs = json.load(open(f"data/processed/{data_type}/prepared.json", "r", encoding="utf-8"))
     data = predict_error_message(data_no_error_msgs)
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         predict_func=predict,
         save_path=save_path,
         use_tqdm=True, 
-        save_intermediate = False
+        save_intermediate = True
     )
     
     if data_type == "train":
