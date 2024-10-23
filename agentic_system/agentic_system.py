@@ -79,7 +79,8 @@ class AngenticSystem():
         student_solution = remove_comments_and_docstrings(student_solution)
         
         injection_check_response = self.injection_checker.invoke({
-            'student_solution':student_solution
+            'student_solution':student_solution,
+            'correct_example':correct_example
         })        
         need_jailguard = injection_check_response.content != 'CLEAR' and injection_check_response.content != 'clear' and injection_check_response.content != 'Сlear' 
         
@@ -94,6 +95,7 @@ class AngenticSystem():
                 open('logs/ic_log.txt', 'w', encoding='utf-8').close()
                 print(injection_check_response.content, need_jailguard, file=open('logs/ic_log.txt', 'a', encoding='utf-8'))
         jailguarded_solution = student_solution
+    
         if need_jailguard:
             for _ in range(3):
                 jailguard_response = self.jailguard.invoke({
